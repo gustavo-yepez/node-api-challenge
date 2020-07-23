@@ -7,7 +7,14 @@ const router = express.Router();
 router.use("/:id", validateId);
 
 router.get("/", (req, res) => {
-  res.status(200).json("id required");
+  ahelper
+    .get()
+    .then((action) => res.status(200).json(action))
+    .catch((err) =>
+      res.status(500).json({
+        message: "Something went wrong getting action.",
+      })
+    );
 });
 
 router.get("/:id", (req, res) => {
@@ -26,7 +33,9 @@ router.post("/", (req, res) => {
   ahelper
     .get()
     .then((action) => {
-      if (!req.body.project_id || !req.body.description || req.body.completed) {
+      console.log("hello");
+      if (!req.body.project_id || !req.body.description || !req.body.completed) {
+        console.log(req.body.project_id, req.body.description,req.body.completed)
         res.status(400).json({
           Message: "Make sure all fields have an entry",
         });
